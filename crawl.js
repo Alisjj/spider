@@ -6,7 +6,6 @@ function getURLsFromHtml(htmlBody, baseURL) {
     const anchors = body.window.document.querySelectorAll("a");
     for (const anchor of anchors) {
         if (anchor.getAttribute("href")) {
-            // url.push(anchor.getAttribute("href"));
             const href = new URL(anchor.href, baseURL);
             url.push(href.href);
         }

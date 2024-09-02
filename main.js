@@ -1,8 +1,16 @@
-import { getURLsFromHtml } from "./crawl";
+import { argv } from "node:process";
 
-console.log(
-    getURLsFromHtml(
-        "<html> <body> <a href='https://blog.boot.dev'><span>Go to Boot.dev</span></a> </body> </html>",
-        "http://blog.boot.dev/path"
-    )
-);
+function main() {
+    const argLen = argv.length;
+    if (argLen === 3) {
+        console.log("Crawling..........");
+    } else if (argLen < 3) {
+        console.log("No argument is given!!");
+        return;
+    } else if (argLen > 3) {
+        console.log("Only one argument is required!!");
+        return;
+    }
+}
+
+main();
