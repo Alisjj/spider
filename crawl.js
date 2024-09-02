@@ -18,4 +18,26 @@ function normarlizeUrl(url) {
     return `${obj.host}/${obj.pathname.replace(/\//g, "")}`;
 }
 
-export { normarlizeUrl, getURLsFromHtml };
+async function crawlPage(currentURL) {
+    try {
+        const response = await fetch(currentURL, {
+            method: "GET",
+            mode: "cors",
+            headers: {},
+        });
+
+        if ((await response.status) >= 400 && (await response.status) < 500) {
+            console.log("Error: Invalid URL");
+            return;
+        }
+        if (await !response.headers.get("content-type").includes("text/html")) {
+            console.log("Error: Content is not HTMl");
+            return;
+        }
+        console.log(await response.text());
+    } catch (error) {
+        console.log(`Error: ${error}`);
+    }
+}
+
+export { normarlizeUrl, getURLsFromHtml, crawlPage };

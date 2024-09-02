@@ -1,9 +1,11 @@
 import { argv } from "node:process";
+import { crawlPage } from "./crawl.js";
 
-function main() {
+async function main() {
     const argLen = argv.length;
     if (argLen === 3) {
         console.log("Crawling..........");
+        console.log(await crawlPage(argv[2]));
     } else if (argLen < 3) {
         console.log("No argument is given!!");
         return;
