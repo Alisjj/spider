@@ -18,7 +18,31 @@ function normarlizeUrl(url) {
     return `${obj.host}/${obj.pathname.replace(/\//g, "")}`;
 }
 
-async function crawlPage(currentURL) {
+async function crawlPage(baseURL, currentURL = baseURL, pages = {}) {
+    const baseURLh = new URL(baseURL);
+    const currentURLh = new URL(currentURL);
+
+    if (baseURLh.hostname !== currentURLh.hostname) {
+        return pages;
+    }
+
+    const NCurrentURL = normarlizeUrl(currentURL);
+    if (NCurrentURL in pages) {
+        pages[NCurrentURL]++;
+        return pages;
+    }
+    pages[NCurrentURL] = 1;
+
+    const html = await fetchHTML(currentURL);
+    const urls = getURLsFromHtml(html, currentURL);
+    for (const url of urls) {
+        await crawlPage(baseURL, url, pages);
+    }
+
+    return pages;
+}
+
+async function fetchHTML(currentURL) {
     try {
         const response = await fetch(currentURL, {
             method: "GET",
@@ -34,9 +58,12 @@ async function crawlPage(currentURL) {
             console.log("Error: Content is not HTMl");
             return;
         }
-        console.log(await response.text());
+        console.log("Retrieved!!");
+
+        return await response.text();
     } catch (error) {
         console.log(`Error: ${error}`);
+        return;
     }
 }
 
