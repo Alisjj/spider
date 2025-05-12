@@ -7,6 +7,7 @@ async function main() {
     if (argLen === 3) {
         console.log("Crawling..........");
         const pages = await crawlPage(argv[2]);
+        console.log("Change :)");
         console.log(printReport(pages));
     } else if (argLen < 3) {
         console.log("No argument is given!!");
